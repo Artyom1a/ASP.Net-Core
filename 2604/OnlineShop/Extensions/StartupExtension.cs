@@ -22,6 +22,7 @@ namespace OnlineShop.Extensions
         {
 
             services.AddTransient<UserServices>();
+            services.AddTransient<AccountService>();
         }
 
 
