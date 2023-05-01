@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
-using OnlineShop.Models;
+using OnlineShop.Models.Repository;
 using OnlineShop.Repositories;
 using OnlineShop.Services;
 using System.Data.Common;
@@ -8,14 +9,14 @@ using System.Data.Common;
 namespace OnlineShop.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
+
         private readonly UserRepository m_Service;
-        private readonly MySqlConnection k_Connection;
-        public UserController(MySqlConnection connection, UserRepository userRepository)
+        public UserController(UserRepository userRepository)
         {
-            k_Connection = connection;
             m_Service = userRepository;
         }
 
@@ -34,6 +35,7 @@ namespace OnlineShop.Controllers
 
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpGet("getbyid/{id}")]
         public IActionResult Get(int id)
         {
@@ -57,7 +59,7 @@ namespace OnlineShop.Controllers
         {
             try
             {
-                UserServices userServices = new UserServices(k_Connection);
+                UserServices userServices = new UserServices(m_Service);
                 userServices.Create(user);
                 return Ok();
             }
@@ -67,6 +69,7 @@ namespace OnlineShop.Controllers
             }
 
         }
+
 
     }
 }
