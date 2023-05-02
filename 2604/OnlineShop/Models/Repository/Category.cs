@@ -1,6 +1,6 @@
-﻿namespace OnlineShop.Models
+﻿namespace OnlineShop.Models.Repository
 {
-    public class Brand
+    public class Category
     {
         public int Id { get; set; }
 
