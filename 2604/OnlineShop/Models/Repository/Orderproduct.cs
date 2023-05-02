@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Models
+﻿namespace OnlineShop.Models.Repository
 {
     public class Orderproduct
     {
