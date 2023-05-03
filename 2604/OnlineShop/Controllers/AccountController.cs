@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Models.ApiRequest;
 using OnlineShop.Models.Options;
-using OnlineShop.Models.Repository;
 using OnlineShop.Repositories;
 using OnlineShop.Services;
 
@@ -14,7 +13,6 @@ namespace OnlineShop.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly UserRepository m_Service;
         private readonly AccountService m_accountService;
         
         public AccountController(AccountService accountService)

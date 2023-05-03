@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
 using OnlineShop.Models.Repository;
 using OnlineShop.Repositories;
 using OnlineShop.Services;
-using System.Data.Common;
 
 namespace OnlineShop.Controllers
 {
@@ -13,20 +11,22 @@ namespace OnlineShop.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-
-        private readonly UserRepository m_Service;
-        public UserController(UserRepository userRepository)
+        private readonly UserServices services;
+        private readonly UserRepository m_Repos;
+        public UserController(UserServices userServices,UserRepository userRepository)
         {
-            m_Service = userRepository;
+            services = userServices;
+            m_Repos = userRepository;
         }
 
         //GET “/user”
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             try
             {
-                return Ok(m_Service.GetAll());
+                
+                return Ok(services.GetAll());
             }
             catch (Exception ex)
             {
@@ -37,11 +37,11 @@ namespace OnlineShop.Controllers
 
         [Authorize(Roles ="Admin")]
         [HttpGet("getbyid/{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
             try
             {
-                return Ok(m_Service.GetById(id));
+                return Ok(services.GetById(id));
             }
             catch (Exception ex)
             {
@@ -59,8 +59,7 @@ namespace OnlineShop.Controllers
         {
             try
             {
-                UserServices userServices = new UserServices(m_Service);
-                userServices.Create(user);
+                services.Create(user);
                 return Ok();
             }
             catch (Exception ex)
@@ -70,6 +69,20 @@ namespace OnlineShop.Controllers
 
         }
 
+
+
+        [HttpPut("update/{id}")]
+        public IActionResult UpdateUser(User user)
+        {
+            try
+            {
+                return Ok(services.Update(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }
