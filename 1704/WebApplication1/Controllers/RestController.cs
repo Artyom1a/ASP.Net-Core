@@ -124,20 +124,58 @@ namespace WebApplication1.Controllers
 
 
         //https://localhost:7100/api/rest/UpdateItem/1
-        public IActionResult UpdateItem([FromBody]ArrayItemModel data, int index)
+        public IActionResult UpdateItem([FromBody] ArrayItemModel data, int index)
         {
             if (data.Item == null) return BadRequest();
 
             try
             {
 
-                ArrayService.Array[index-1] = data.Item;
+                ArrayService.Array[index - 1] = data.Item;
                 return Ok(GetArray());
             }
-            catch(ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return BadRequest();
             }
         }
+
+        [HttpPost("[action]/{split}")]
+
+        public IActionResult ShowResult(int split, [FromBody] List<int> array) //List<List<int>>
+        {
+            if (split <= 0) return BadRequest();
+            if (array.Count == 0) return BadRequest();
+            //List<List<int>> result = new List<List<int>>();
+            //List<int> itemresult = new List<int>();
+            //for (int i = 0; i < array.Count; i++)
+            //{
+            //    itemresult.Add(array[i]);
+            //    if (itemresult.Count == split)
+            //    {
+            //        result.Add(itemresult);
+            //        itemresult = new List<int>();
+            //    }
+            //}
+            //if (itemresult.Count > 0)
+            //{
+            //    result.Add(itemresult);
+            //}
+            List<List<int>> result = new List<List<int>>() { new List<int>() };
+            for (int i = 0; i < array.Count; i++)
+            {
+                var itemresult = result.Last();
+                itemresult.Add(array[i]);
+                if (itemresult.Count == split && i != array.Count-1)
+                {
+                    result.Add(new List<int>());
+                }
+            }
+
+            //var result = array.Select((value, index) => new { Index = index, Value = value }).GroupBy(x => x.Index / split).Select(o => o.Select(y => y.Value));
+
+            return Ok(result);
+        }
+
     }
 }
