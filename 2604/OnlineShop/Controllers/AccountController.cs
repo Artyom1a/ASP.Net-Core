@@ -24,8 +24,8 @@ namespace OnlineShop.Controllers
         {
             return m_accountService.Token(login.NickName,login.Password );
         }
-        [Authorize]
-        [HttpPost("[action]")]
+        
+        [HttpPost("[action]"),Authorize]
 
         public IActionResult Logout()
         {

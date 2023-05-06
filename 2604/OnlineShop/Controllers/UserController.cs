@@ -84,5 +84,18 @@ namespace OnlineShop.Controllers
             }
         }
 
+
+        [HttpDelete("delete/{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            try
+            {
+                return Ok(services.Delete(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
