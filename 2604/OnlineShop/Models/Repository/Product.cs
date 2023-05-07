@@ -8,7 +8,7 @@
 
         public string Description { get; set; }
 
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         public int category_id { get; set; }
 
         public int brand_id { get; set; }
