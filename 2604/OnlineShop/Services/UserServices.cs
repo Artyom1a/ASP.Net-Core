@@ -1,10 +1,10 @@
 ﻿
 using System.Text.Json;
 using System.Text;
-using OnlineShop.Models;
 using OnlineShop.Repositories;
 using MySql.Data.MySqlClient;
 using System.Data.Common;
+using OnlineShop.Models.Repository;
 
 namespace OnlineShop.Services
 {
@@ -18,8 +18,19 @@ namespace OnlineShop.Services
         //}
         public UserServices(UserRepository repository)
         {
-            m_userrep = repository;
+            m_userrep = repository ?? throw new ArgumentNullException(nameof(repository));
         }
+
+        public List<User> GetAll()
+        {
+            return m_userrep.GetAll();
+        }
+
+        public User GetById(int id)
+        {
+            return  m_userrep.GetById(id);
+        }
+
 
         public void Create(User user)
         {
@@ -32,5 +43,34 @@ namespace OnlineShop.Services
             //list.Add(user);
             m_userrep.WriteNew(user);
         }
+
+        public  User Update(User user)
+        {
+            return m_userrep.Update(user);
+        }
+
+
+
+
+        public bool Delete(int id)
+        {
+            return m_userrep.Delete(id);
+        }
+
+
+        internal User GetUserByEmail(string email)
+        {
+            
+            if (email == null)
+            {
+                throw new ArgumentNullException(nameof (email));
+            }
+
+            return m_userrep.GetByEmai(email);
+        }
+
+
+
+
     }
 }
