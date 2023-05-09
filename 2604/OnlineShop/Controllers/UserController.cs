@@ -13,29 +13,22 @@ namespace OnlineShop.Controllers
     {
         private readonly UserServices services;
         private readonly UserRepository m_Repos;
-        public UserController(UserServices userServices,UserRepository userRepository)
+        public UserController(UserServices userServices, UserRepository userRepository)
         {
             services = userServices;
             m_Repos = userRepository;
         }
 
         //GET “/user”
+        [AllowAnonymous]
+        [ResponseCache(Duration = 60)]
         [HttpGet]
         public IActionResult GetAll()
         {
-            try
-            {
-                
-                return Ok(services.GetAll());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
+            return Ok(services.GetAll());
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("getbyid/{id}")]
         public IActionResult GetById(int id)
         {
@@ -97,5 +90,7 @@ namespace OnlineShop.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
     }
 }
